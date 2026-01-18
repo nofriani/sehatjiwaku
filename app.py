@@ -10,104 +10,160 @@ st.set_page_config(
 )
 
 # =====================
+# STYLE
+# =====================
+st.markdown("""
+<style>
+body {
+    background-color: #f4f9f9;
+}
+.block {
+    background-color: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.08);
+    margin-bottom: 30px;
+}
+.title {
+    font-size: 42px;
+    font-weight: 800;
+    color: #2aa198;
+}
+.subtitle {
+    font-size: 18px;
+    color: #555;
+}
+</style>
+""", unsafe_allow_html=True)
+
+# =====================
 # SIDEBAR NAVIGATION
 # =====================
 st.sidebar.title("🧠 SehatJiwa")
 menu = st.sidebar.radio(
-    "Navigasi",
-    ["Beranda", "Edukasi", "Tes Kesehatan Mental", "Dukungan"]
+    "Menu",
+    ["Beranda", "Artikel Edukasi", "Video Edukasi", "Tes Kesehatan Mental", "Dukungan"]
 )
 
 # =====================
 # BERANDA
 # =====================
 if menu == "Beranda":
-    st.title("🧠 SehatJiwa")
-    st.subheader("Website Edukasi Kesehatan Mental Berbasis Pemuda")
+    st.markdown("<div class='block'>", unsafe_allow_html=True)
+    st.markdown("<div class='title'>SehatJiwa</div>", unsafe_allow_html=True)
+    st.markdown("<div class='subtitle'>Website Edukasi Kesehatan Mental Berbasis Pemuda</div>", unsafe_allow_html=True)
 
     st.markdown("""
     **SehatJiwa** merupakan website edukasi kesehatan mental yang dikembangkan oleh pemuda
-    sebagai media digital yang **akurat, komprehensif, mudah dipahami, dan inklusif**.
+    sebagai media digital yang **akurat, komprehensif, mudah dipahami, dan inklusif** bagi masyarakat.
 
     Website ini bertujuan meningkatkan **literasi kesehatan mental** melalui konten edukatif
-    yang terstruktur dan ramah pengguna.
+    yang terstruktur, ramah pengguna, dan berbasis bukti.
     """)
-
-    st.info("💡 Gunakan menu di samping untuk menjelajahi fitur SehatJiwa")
+    st.info("👉 Gunakan menu di samping untuk membaca artikel, menonton video, dan melakukan tes refleksi diri.")
+    st.markdown("</div>", unsafe_allow_html=True)
 
 # =====================
-# EDUKASI
+# ARTIKEL EDUKASI
 # =====================
-elif menu == "Edukasi":
-    st.header("📚 Konten Edukatif & Komprehensif")
+elif menu == "Artikel Edukasi":
+    st.markdown("<div class='block'>", unsafe_allow_html=True)
+    st.header("📖 Artikel Edukasi Kesehatan Mental")
 
-    with st.expander("📖 Artikel Edukatif"):
+    with st.expander("🧠 Apa Itu Kesehatan Mental?"):
         st.write("""
-        Artikel edukatif membahas:
-        - Pengertian kesehatan mental  
-        - Depresi, kecemasan, dan stres  
-        - Pentingnya menjaga kesehatan jiwa  
+        Kesehatan mental adalah kondisi kesejahteraan ketika seseorang mampu mengenali
+        potensi dirinya, mengelola stres kehidupan sehari-hari, bekerja secara produktif,
+        serta berkontribusi di lingkungan sosial.
+
+        Menjaga kesehatan mental sama pentingnya dengan menjaga kesehatan fisik,
+        karena keduanya saling berkaitan.
         """)
 
-    with st.expander("📊 Infografis Interaktif"):
+    with st.expander("😔 Depresi, Kecemasan, dan Stres"):
         st.write("""
-        Infografis membantu memahami:
-        - Faktor risiko kesehatan mental  
-        - Tanda awal gangguan mental  
-        - Cara menjaga keseimbangan emosi  
+        Depresi ditandai dengan perasaan sedih berkepanjangan dan kehilangan minat.
+        Kecemasan muncul dalam bentuk rasa takut atau khawatir berlebihan,
+        sedangkan stres adalah respons tubuh terhadap tekanan.
+
+        Ketiganya dapat dikelola dengan edukasi, dukungan sosial, dan bantuan profesional.
         """)
 
-    with st.expander("🎥 Video Edukasi"):
+    with st.expander("🌱 Strategi Mengelola Stres dan Emosi"):
         st.write("""
-        Video edukasi singkat yang mudah dipahami untuk meningkatkan
-        kesadaran dan pemahaman kesehatan mental.
+        Beberapa strategi sederhana yang dapat dilakukan:
+        - Mengatur waktu istirahat
+        - Melakukan aktivitas fisik ringan
+        - Berbicara dengan orang terpercaya
+        - Membatasi paparan media sosial
         """)
+
+    st.markdown("</div>", unsafe_allow_html=True)
+
+# =====================
+# VIDEO EDUKASI
+# =====================
+elif menu == "Video Edukasi":
+    st.markdown("<div class='block'>", unsafe_allow_html=True)
+    st.header("🎥 Video Edukasi Kesehatan Mental")
+
+    st.write("Video berikut membantu memahami kesehatan mental secara sederhana dan mudah dipahami.")
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        st.subheader("Kesehatan Mental Itu Penting")
+        st.video("https://www.youtube.com/watch?v=oxx564hMBUI")
+
+    with col2:
+        st.subheader("Cara Mengelola Stres")
+        st.video("https://www.youtube.com/watch?v=hnpQrMqDoqE")
+
+    st.markdown("</div>", unsafe_allow_html=True)
 
 # =====================
 # TES KESEHATAN MENTAL
 # =====================
 elif menu == "Tes Kesehatan Mental":
+    st.markdown("<div class='block'>", unsafe_allow_html=True)
     st.header("📝 Tes Kesehatan Mental (Refleksi Diri)")
+    st.warning("Tes ini bukan diagnosis medis, hanya refleksi awal.")
 
-    st.warning("⚠️ Tes ini bukan diagnosis medis, hanya refleksi awal.")
-
-    q1 = st.slider("Saya merasa cemas atau tertekan", 0, 3, 1)
-    q2 = st.slider("Saya sulit menikmati aktivitas sehari-hari", 0, 3, 1)
-    q3 = st.slider("Saya merasa kelelahan secara emosional", 0, 3, 1)
+    q1 = st.radio("Saya merasa cemas atau tertekan akhir-akhir ini", ["Tidak", "Kadang", "Sering"])
+    q2 = st.radio("Saya sulit menikmati aktivitas sehari-hari", ["Tidak", "Kadang", "Sering"])
+    q3 = st.radio("Saya merasa kelelahan secara emosional", ["Tidak", "Kadang", "Sering"])
 
     if st.button("Lihat Hasil"):
-        total = q1 + q2 + q3
+        skor = [q1, q2, q3].count("Sering")
 
-        if total <= 2:
+        if skor == 0:
             st.success("Kondisi mental kamu relatif baik. Tetap jaga kesehatan jiwa 💚")
-        elif total <= 6:
+        elif skor <= 2:
             st.warning("Kamu mungkin sedang mengalami tekanan. Luangkan waktu untuk self-care.")
         else:
             st.error("Kamu membutuhkan dukungan lebih lanjut. Jangan ragu mencari bantuan profesional.")
+
+    st.markdown("</div>", unsafe_allow_html=True)
 
 # =====================
 # DUKUNGAN
 # =====================
 elif menu == "Dukungan":
+    st.markdown("<div class='block'>", unsafe_allow_html=True)
     st.header("🤝 Komunitas & Dukungan")
 
-    st.markdown("""
-    SehatJiwa juga berfungsi sebagai **ruang dukungan** dengan menyediakan
-    informasi rujukan bantuan profesional.
+    st.write("""
+    SehatJiwa menyediakan informasi rujukan bantuan profesional sebagai
+    bentuk dukungan kesehatan mental.
     """)
 
-    col1, col2 = st.columns(2)
+    st.success("🏫 Konselor Sekolah – Pendampingan awal")
+    st.info("🧑‍⚕️ Psikolog / Konselor Profesional")
+    st.warning("🚨 Jika darurat, segera hubungi layanan kesehatan terdekat")
 
-    with col1:
-        st.success("🏫 Konselor Sekolah\n\nPendampingan awal bagi pelajar.")
-
-    with col2:
-        st.info("🧑‍⚕️ Psikolog & Tenaga Profesional\n\nDukungan kesehatan mental lanjutan.")
-
-    st.markdown("Jika kondisi darurat, segera hubungi layanan kesehatan terdekat.")
+    st.markdown("</div>", unsafe_allow_html=True)
 
 # =====================
 # FOOTER
 # =====================
 st.caption("© 2026 SehatJiwa | Youth-Led Mental Health Education")
-
