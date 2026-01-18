@@ -1,179 +1,159 @@
 import streamlit as st
 
-# =========================
+# =====================
 # CONFIG
-# =========================
-st.set_page_config(layout="wide", page_title="SehatJiwa")
+# =====================
+st.set_page_config(page_title="SehatJiwa", layout="wide")
 
-if "page" not in st.session_state:
-    st.session_state.page = "Beranda"
-if "article_id" not in st.session_state:
-    st.session_state.article_id = None
-
-# =========================
+# =====================
 # STYLE
-# =========================
+# =====================
 st.markdown("""
 <style>
 body { background-color: #f6fbfb; }
 
-.nav {
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:14px 30px;
-    background:white;
-    border-radius:14px;
-    box-shadow:0 2px 8px rgba(0,0,0,0.05);
-    margin-bottom:30px;
-}
-.nav a {
-    margin-right:22px;
-    font-weight:500;
-    color:#334155;
-    text-decoration:none;
-}
-.nav a:hover { color:#14b8a6; }
-
-.cta {
-    background:#14b8a6;
-    color:white;
-    padding:10px 18px;
-    border-radius:999px;
-    font-weight:600;
+.container {
+    max-width: 1200px;
+    margin: auto;
 }
 
 .hero {
-    padding:90px 60px;
-    border-radius:28px;
-    background:linear-gradient(120deg,#e6fffb,#f0fdfa);
-    margin-bottom:50px;
+    padding: 80px 60px;
+    border-radius: 28px;
+    background: linear-gradient(120deg,#e6fffb,#f0fdfa);
+    margin-bottom: 50px;
 }
+
 .hero h1 {
-    font-size:56px;
-    line-height:1.1;
+    font-size: 52px;
+    line-height: 1.15;
 }
-.hero span { color:#14b8a6; }
+.hero span { color: #14b8a6; }
+
+.section-title {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
 
 .card {
-    background:white;
-    border-radius:18px;
-    padding:18px;
-    box-shadow:0 6px 18px rgba(0,0,0,0.06);
-    margin-bottom:30px;
+    background: white;
+    border-radius: 18px;
+    padding: 16px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+    margin-bottom: 25px;
 }
-.card img {
-    width:100%;
-    height:190px;
-    object-fit:cover;
-    border-radius:14px;
+
+.article-img {
+    height: 170px;
+    overflow: hidden;
+    border-radius: 14px;
+    margin-bottom: 12px;
+}
+
+.article-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .badge {
-    display:inline-block;
-    font-size:12px;
-    padding:4px 10px;
-    border-radius:999px;
-    background:#e6fffb;
-    color:#0f766e;
-    margin-bottom:8px;
-}
-.meta {
-    font-size:13px;
-    color:#64748b;
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: #e6fffb;
+    color: #0f766e;
+    display: inline-block;
+    margin-bottom: 6px;
 }
 
-.button {
-    color:#14b8a6;
-    font-weight:600;
-    cursor:pointer;
+.meta {
+    font-size: 13px;
+    color: #64748b;
+    margin-bottom: 6px;
+}
+
+.article-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.video-card iframe {
+    border-radius: 14px;
+    height: 220px !important;
 }
 </style>
 """, unsafe_allow_html=True)
 
-# =========================
-# NAVBAR
-# =========================
-col1, col2 = st.columns([3,2])
-with col1:
-    st.markdown("""
-    <div class="nav">
-      <div><strong>SehatJiwa</strong></div>
-      <div>
-        <a onclick="window.location.reload()">Beranda</a>
-        <a>Artikel</a>
-        <a>Video</a>
-        <a>Cek Mandiri</a>
-        <a>Layanan & Komunitas</a>
-      </div>
-    </div>
-    """, unsafe_allow_html=True)
-
-# =========================
-# DATA ARTIKEL (10)
-# =========================
+# =====================
+# DATA
+# =====================
 articles = [
     {
-        "id": i,
         "title": f"Mengenal Kesehatan Mental #{i}",
         "author": "Tim SehatJiwa",
         "date": "Januari 2026",
         "image": "https://images.unsplash.com/photo-1506126613408-eca07ce68773",
         "summary": "Pemahaman dasar mengenai kesehatan mental dan pentingnya kesadaran diri.",
-        "content": """
-Kesehatan mental adalah kondisi kesejahteraan psikologis yang memungkinkan individu
-mengelola stres, bekerja produktif, dan berkontribusi di masyarakat.
-
-Kurangnya literasi kesehatan mental sering menyebabkan stigma dan keterlambatan
-dalam mencari bantuan profesional.
-"""
+        "content": "Kesehatan mental adalah kondisi kesejahteraan psikologis yang memengaruhi cara berpikir, merasa, dan bertindak."
     } for i in range(1,11)
 ]
 
-# =========================
-# BERANDA
-# =========================
-if st.session_state.page == "Beranda" and st.session_state.article_id is None:
-    st.markdown("""
-    <div class="hero">
-      <h1>Kesehatan Mental<br>Dimulai dari <span>Kesadaran</span></h1>
-      <p>Media edukasi digital yang akurat, inklusif, dan bersahabat.</p>
-    </div>
-    """, unsafe_allow_html=True)
+videos = [
+    "https://www.youtube.com/embed/oxx564hMBUI",
+    "https://www.youtube.com/embed/hnpQrMqDoqE",
+    "https://www.youtube.com/embed/MB5IX-np5fE",
+    "https://www.youtube.com/embed/9yjZpBq1XBE",
+    "https://www.youtube.com/embed/2pLT-olgUJs"
+]
 
-    st.subheader("Artikel Pilihan")
-    cols = st.columns(3)
-    for i, art in enumerate(articles[:3]):
-        with cols[i]:
-            st.markdown(f"""
-            <div class="card">
-              <img src="{art['image']}">
-              <div class="badge">EDUKASI</div>
-              <h4>{art['title']}</h4>
-              <div class="meta">{art['date']} • 5 menit baca</div>
-              <p>{art['summary']}</p>
-              <div class="button">Baca Selengkapnya</div>
-            </div>
-            """, unsafe_allow_html=True)
+# =====================
+# MAIN
+# =====================
+st.markdown('<div class="container">', unsafe_allow_html=True)
 
-# =========================
-# ARTIKEL LIST
-# =========================
-st.subheader("Semua Artikel")
+# HERO
+st.markdown("""
+<div class="hero">
+  <h1>Kesehatan Mental<br>Dimulai dari <span>Kesadaran</span></h1>
+  <p>Media edukasi digital yang akurat, inklusif, dan bersahabat.</p>
+</div>
+""", unsafe_allow_html=True)
+
+# =====================
+# ARTIKEL
+# =====================
+st.markdown('<div class="section-title">Artikel Edukasi</div>', unsafe_allow_html=True)
+
 cols = st.columns(3)
 for i, art in enumerate(articles):
     with cols[i % 3]:
-        if st.button(art["title"], key=art["id"]):
-            st.session_state.article_id = art["id"]
+        st.markdown('<div class="card">', unsafe_allow_html=True)
+        st.markdown('<div class="article-img">', unsafe_allow_html=True)
+        st.image(art["image"], use_container_width=True)
+        st.markdown('</div>', unsafe_allow_html=True)
 
-# =========================
-# DETAIL ARTIKEL
-# =========================
-if st.session_state.article_id:
-    art = articles[st.session_state.article_id - 1]
-    st.image(art["image"], use_container_width=True)
-    st.markdown(f"### {art['title']}")
-    st.caption(f"{art['author']} • {art['date']}")
-    st.write(art["content"])
-    if st.button("Kembali"):
-        st.session_state.article_id = None
+        st.markdown('<div class="badge">EDUKASI</div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="article-title">{art["title"]}</div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="meta">{art["author"]} • {art["date"]}</div>', unsafe_allow_html=True)
+        st.write(art["summary"])
+
+        with st.expander("Baca Selengkapnya"):
+            st.write(art["content"])
+
+        st.markdown('</div>', unsafe_allow_html=True)
+
+# =====================
+# VIDEO
+# =====================
+st.markdown('<div class="section-title">Video Edukasi</div>', unsafe_allow_html=True)
+
+vcols = st.columns(3)
+for i, v in enumerate(videos):
+    with vcols[i % 3]:
+        st.markdown('<div class="card video-card">', unsafe_allow_html=True)
+        st.video(v)
+        st.markdown('</div>', unsafe_allow_html=True)
+
+st.markdown('</div>', unsafe_allow_html=True)
