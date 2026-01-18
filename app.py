@@ -1,280 +1,189 @@
 import streamlit as st
 
 # =====================
-# CONFIG
+# KONFIGURASI HALAMAN
 # =====================
-st.set_page_config(page_title="SehatJiwa", layout="wide")
-
-# =====================
-# STYLE
-# =====================
-st.markdown("""
-<style>
-body { background-color: #f6fbfb; }
-
-.container {
-    max-width: 1200px;
-    margin: auto;
-}
-
-.hero {
-    padding: 80px 60px;
-    border-radius: 28px;
-    background: linear-gradient(120deg,#e6fffb,#f0fdfa);
-    margin-bottom: 50px;
-}
-
-.hero h1 {
-    font-size: 52px;
-    line-height: 1.15;
-}
-.hero span { color: #14b8a6; }
-
-.section-title {
-    font-size: 28px;
-    font-weight: 700;
-    margin-bottom: 20px;
-}
-
-.card {
-    background: white;
-    border-radius: 18px;
-    padding: 16px;
-    box-shadow: 0 4px 14px rgba(0,0,0,0.06);
-    margin-bottom: 25px;
-}
-
-.article-img {
-    width: 40%;
-    height: 40px;        /* 🔒 KUNCI UKURAN DI SINI */
-    overflow: hidden;
-    border-radius: 14px;
-    margin-bottom: 12px;
-}
-
-.article-img img {
-    width: 40%;
-    height: 40%;
-    object-fit: cover;   /* POTONG RAPI */
-    display: block;
-}
-
-
-.badge {
-    font-size: 11px;
-    padding: 4px 10px;
-    border-radius: 999px;
-    background: #e6fffb;
-    color: #0f766e;
-    display: inline-block;
-    margin-bottom: 6px;
-}
-
-.meta {
-    font-size: 13px;
-    color: #64748b;
-    margin-bottom: 6px;
-}
-
-.article-title {
-    font-size: 18px;
-    font-weight: 600;
-    margin-bottom: 6px;
-}
-
-.video-card iframe {
-    border-radius: 14px;
-    height: 220px !important;
-}
-</style>
-""", unsafe_allow_html=True)
+st.set_page_config(
+    page_title="SehatJiwa",
+    page_icon="🧠",
+    layout="wide"
+)
 
 # =====================
-# DATA
+# DATA ARTIKEL
 # =====================
-articles = [
+ARTIKEL = [
     {
-        "title": "Mengenal Kecemasan (Anxiety)",
-        "author": "Tim SehatJiwa",
-        "date": "18 Januari 2026",
-        "image": "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee",
-        "summary": "Kecemasan adalah respons alami terhadap stres, namun perlu dikenali sejak dini.",
-        "content": """
-Kecemasan merupakan reaksi alami tubuh terhadap situasi yang dianggap mengancam.
-Namun, ketika rasa cemas muncul secara berlebihan dan terus-menerus, hal ini dapat
-mengganggu aktivitas sehari-hari.
+        "id": 1,
+        "judul": "Apa Itu Kesehatan Mental?",
+        "ringkas": "Pengertian kesehatan mental menurut WHO.",
+        "isi": """
+Kesehatan mental adalah kondisi kesejahteraan
+di mana individu mampu menyadari potensinya,
+mengelola tekanan hidup, bekerja secara produktif,
+dan berkontribusi secara bermakna dalam masyarakat.
 
-Mengenali tanda awal kecemasan membantu individu mengambil langkah preventif
-dan mencari dukungan yang tepat.
+WHO menegaskan bahwa kesehatan mental
+bukan sekadar ketiadaan gangguan mental.
 """
     },
     {
-        "title": "Pentingnya Tidur untuk Kesehatan Mental",
-        "author": "Kontributor Pemuda",
-        "date": "20 Januari 2026",
-        "image": "https://images.unsplash.com/photo-1511295742362-92c96b1cf484",
-        "summary": "Tidur berkualitas berperan penting dalam stabilitas emosi dan fokus.",
-        "content": """
-Tidur yang cukup tidak hanya berdampak pada kesehatan fisik,
-tetapi juga berpengaruh besar terhadap keseimbangan emosional
-dan kemampuan kognitif seseorang.
+        "id": 2,
+        "judul": "Depresi pada Remaja",
+        "ringkas": "Depresi merupakan gangguan mental yang umum dialami remaja.",
+        "isi": """
+Depresi ditandai dengan perasaan sedih berkepanjangan,
+kehilangan minat, kelelahan emosional,
+dan gangguan fungsi sehari-hari.
 
-Kurang tidur dapat meningkatkan risiko stres, kecemasan, dan depresi.
+Data I-NAMHS menunjukkan remaja
+merupakan kelompok paling rentan.
 """
     },
     {
-        "title": "Strategi Praktis Mengelola Stres Harian",
-        "author": "Tim Edukasi",
-        "date": "22 Januari 2026",
-        "image": "https://images.unsplash.com/photo-1506126613408-eca07ce68773",
-        "summary": "Stres dapat dikelola melalui kebiasaan sederhana dan konsisten.",
-        "content": """
-Pengelolaan stres dapat dimulai dari langkah kecil seperti
-mengatur waktu istirahat, melakukan aktivitas fisik ringan,
-dan menjaga keseimbangan antara pekerjaan dan kehidupan pribadi.
-"""
-    },
-    {
-        "title": "Burnout pada Remaja dan Dewasa Muda",
-        "author": "Tim SehatJiwa",
-        "date": "24 Januari 2026",
-        "image": "https://images.unsplash.com/photo-1529333166437-7750a6dd5a70",
-        "summary": "Burnout tidak hanya dialami pekerja profesional.",
-        "content": """
-Burnout ditandai dengan kelelahan emosional, sinisme,
-dan penurunan motivasi. Kondisi ini semakin banyak
-dialami oleh pelajar dan mahasiswa akibat tekanan akademik.
-"""
-    },
-    {
-        "title": "Peran Dukungan Sosial dalam Kesehatan Mental",
-        "author": "Kontributor Pemuda",
-        "date": "26 Januari 2026",
-        "image": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e",
-        "summary": "Lingkungan sosial yang suportif memperkuat resiliensi.",
-        "content": """
-Dukungan dari keluarga, teman, dan komunitas
-membantu individu merasa didengar, dipahami,
-dan tidak menghadapi masalah sendirian.
-"""
-    },
-    {
-        "title": "Mindfulness untuk Menenangkan Pikiran",
-        "author": "Tim Edukasi",
-        "date": "28 Januari 2026",
-        "image": "https://images.unsplash.com/photo-1504198453319-5ce911bafcde",
-        "summary": "Mindfulness membantu fokus pada momen saat ini.",
-        "content": """
-Latihan mindfulness mengajarkan individu
-untuk menyadari pikiran dan emosi tanpa menghakimi,
-sehingga membantu mengurangi tekanan mental.
-"""
-    },
-    {
-        "title": "Media Sosial dan Dampaknya bagi Kesehatan Mental",
-        "author": "Tim SehatJiwa",
-        "date": "30 Januari 2026",
-        "image": "https://images.unsplash.com/photo-1515378791036-0648a3ef77b2",
-        "summary": "Media sosial memiliki dampak positif dan negatif.",
-        "content": """
-Penggunaan media sosial secara berlebihan
-dapat memicu perbandingan sosial dan stres.
-Penggunaan yang bijak dapat menjaga kesehatan mental.
-"""
-    },
-    {
-        "title": "Mengelola Emosi Secara Sehat",
-        "author": "Tim Edukasi",
-        "date": "1 Februari 2026",
-        "image": "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91",
-        "summary": "Kemampuan mengenali emosi penting bagi kesejahteraan psikologis.",
-        "content": """
-Mengelola emosi tidak berarti menekan perasaan,
-melainkan memahami dan mengekspresikannya
-secara sehat dan adaptif.
-"""
-    },
-    {
-        "title": "Kapan Harus Mencari Bantuan Profesional?",
-        "author": "Tim SehatJiwa",
-        "date": "3 Februari 2026",
-        "image": "https://images.unsplash.com/photo-1520975916090-3105956dac38",
-        "summary": "Mencari bantuan adalah langkah berani, bukan kelemahan.",
-        "content": """
-Apabila stres atau kecemasan berlangsung lama
-dan mengganggu fungsi harian,
-bantuan profesional perlu dipertimbangkan.
-"""
-    },
-    {
-        "title": "Membangun Resiliensi di Era Digital",
-        "author": "Kontributor Pemuda",
-        "date": "5 Februari 2026",
-        "image": "https://images.unsplash.com/photo-1496307042754-b4aa456c4a2d",
-        "summary": "Resiliensi membantu individu beradaptasi dengan perubahan.",
-        "content": """
-Resiliensi merupakan kemampuan untuk bangkit
-dari tekanan dan tantangan hidup,
-terutama di era digital yang serba cepat.
+        "id": 3,
+        "judul": "Pentingnya Literasi Kesehatan Mental",
+        "ringkas": "Literasi mental membantu mengenali dan mencegah gangguan.",
+        "isi": """
+Literasi kesehatan mental membantu individu:
+- Mengenali gejala awal gangguan mental
+- Mengurangi stigma
+- Mendorong pencarian bantuan profesional
+
+Rendahnya literasi meningkatkan risiko misinformasi.
 """
     }
 ]
 
+# =====================
+# SESSION STATE
+# =====================
+if "page" not in st.session_state:
+    st.session_state.page = "Beranda"
 
-videos = [
-    "https://www.youtube.com/embed/oxx564hMBUI",
-    "https://www.youtube.com/embed/hnpQrMqDoqE",
-    "https://www.youtube.com/embed/MB5IX-np5fE",
-    "https://www.youtube.com/embed/9yjZpBq1XBE",
-    "https://www.youtube.com/embed/2pLT-olgUJs"
-]
+if "artikel_id" not in st.session_state:
+    st.session_state.artikel_id = None
 
 # =====================
-# MAIN
+# SIDEBAR NAVIGASI
 # =====================
-st.markdown('<div class="container">', unsafe_allow_html=True)
-
-# HERO
-st.markdown("""
-<div class="hero">
-  <h1>Kesehatan Mental<br>Dimulai dari <span>Kesadaran</span></h1>
-  <p>Media edukasi digital yang akurat, inklusif, dan bersahabat.</p>
-</div>
-""", unsafe_allow_html=True)
-
-# =====================
-# ARTIKEL
-# =====================
-st.markdown('<div class="section-title">Artikel Edukasi</div>', unsafe_allow_html=True)
-
-cols = st.columns(3)
-for i, art in enumerate(articles):
-    with cols[i % 3]:
-        st.markdown('<div class="card">', unsafe_allow_html=True)
-        st.markdown('<div class="article-img">', unsafe_allow_html=True)
-        st.image(art["image"], use_container_width=True)
-        st.markdown('</div>', unsafe_allow_html=True)
-
-        st.markdown('<div class="badge">EDUKASI</div>', unsafe_allow_html=True)
-        st.markdown(f'<div class="article-title">{art["title"]}</div>', unsafe_allow_html=True)
-        st.markdown(f'<div class="meta">{art["author"]} • {art["date"]}</div>', unsafe_allow_html=True)
-        st.write(art["summary"])
-
-        with st.expander("Baca Selengkapnya"):
-            st.write(art["content"])
-
-        st.markdown('</div>', unsafe_allow_html=True)
+menu = st.sidebar.radio(
+    "📌 Menu",
+    [
+        "Beranda",
+        "Artikel Edukasi",
+        "Video Edukasi",
+        "Tes Mental",
+        "Pelayanan"
+    ]
+)
 
 # =====================
-# VIDEO
+# BERANDA
 # =====================
-st.markdown('<div class="section-title">Video Edukasi</div>', unsafe_allow_html=True)
+if menu == "Beranda":
+    st.title("🧠 SehatJiwa")
+    st.subheader("Website Edukasi Kesehatan Mental")
 
-vcols = st.columns(3)
-for i, v in enumerate(videos):
-    with vcols[i % 3]:
-        st.markdown('<div class="card video-card">', unsafe_allow_html=True)
-        st.video(v)
-        st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown("""
+    **SehatJiwa** adalah platform edukasi kesehatan mental
+    yang menyajikan informasi akurat, mudah dipahami,
+    dan inklusif bagi masyarakat.
 
-st.markdown('</div>', unsafe_allow_html=True)
+    🎯 Tujuan:
+    - Meningkatkan literasi kesehatan mental  
+    - Mengurangi stigma  
+    - Mendorong perilaku mencari bantuan  
+    """)
+
+    st.info("Gunakan menu di samping untuk menjelajahi fitur SehatJiwa.")
+
+# =====================
+# ARTIKEL EDUKASI
+# =====================
+elif menu == "Artikel Edukasi":
+
+    # ===== HALAMAN DETAIL ARTIKEL =====
+    if st.session_state.page == "detail":
+        artikel = next(
+            (a for a in ARTIKEL if a["id"] == st.session_state.artikel_id),
+            None
+        )
+
+        if artikel:
+            st.title("📖 Detail Artikel")
+            st.header(artikel["judul"])
+            st.write(artikel["isi"])
+
+            if st.button("⬅ Kembali ke Daftar Artikel"):
+                st.session_state.page = "list"
+        else:
+            st.error("Artikel tidak ditemukan.")
+
+    # ===== HALAMAN LIST ARTIKEL =====
+    else:
+        st.session_state.page = "list"
+        st.title("📚 Artikel Edukasi")
+
+        for a in ARTIKEL:
+            st.subheader(a["judul"])
+            st.write(a["ringkas"])
+
+            if st.button("Baca Selengkapnya", key=a["id"]):
+                st.session_state.artikel_id = a["id"]
+                st.session_state.page = "detail"
+                st.rerun()
+
+# =====================
+# VIDEO EDUKASI
+# =====================
+elif menu == "Video Edukasi":
+    st.title("🎥 Video Edukasi Kesehatan Mental")
+
+    st.video("https://www.youtube.com/watch?v=oxx564hMBUI")
+
+    st.markdown("""
+    Video ini membahas pentingnya menjaga kesehatan mental,
+    mengenali stres, dan mengurangi stigma di masyarakat.
+    """)
+
+# =====================
+# TES KESEHATAN MENTAL
+# =====================
+elif menu == "Tes Mental":
+    st.title("📝 Tes Kesehatan Mental Sederhana")
+
+    st.caption("⚠️ Tes ini bersifat skrining awal, bukan diagnosis.")
+
+    q1 = st.radio("Saya sering merasa cemas berlebihan", [0, 1, 2, 3])
+    q2 = st.radio("Saya sulit tidur atau sering terbangun", [0, 1, 2, 3])
+    q3 = st.radio("Saya kehilangan minat terhadap hal yang biasa saya sukai", [0, 1, 2, 3])
+
+    if st.button("Lihat Hasil"):
+        skor = q1 + q2 + q3
+
+        if skor <= 3:
+            st.success("Kondisi mental Anda tergolong baik.")
+        elif skor <= 6:
+            st.warning("Terdapat tanda stres ringan.")
+        else:
+            st.error("Disarankan untuk berkonsultasi dengan tenaga profesional.")
+
+# =====================
+# PELAYANAN
+# =====================
+elif menu == "Pelayanan":
+    st.title("📞 Pelayanan Kesehatan Mental")
+
+    st.markdown("""
+    **Layanan Darurat Indonesia**
+    - 📞 **119 ext. 8 (SEJIWA)**
+    - 📞 Hotline Kemenkes
+
+    **Rujukan Bantuan**
+    - Puskesmas terdekat
+    - Psikolog
+    - Psikiater
+    """)
+
+    st.info("Jika Anda atau orang di sekitar Anda membutuhkan bantuan, jangan ragu untuk menghubungi layanan di atas.")
