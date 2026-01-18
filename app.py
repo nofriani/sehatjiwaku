@@ -1,5 +1,4 @@
 import streamlit as st
-from datetime import date
 
 # =====================
 # PAGE CONFIG
@@ -14,52 +13,51 @@ st.set_page_config(
 # =====================
 st.markdown("""
 <style>
-body {
-    background-color: #f3f8f8;
-}
+body { background-color: #f3f8f8; }
+
 .hero {
-    background-image: url('https://images.unsplash.com/photo-1520975922284-7b958f0f22a0');
+    background-image: url('https://images.unsplash.com/photo-1494790108377-be9c29b29330');
     background-size: cover;
     background-position: center;
-    padding: 80px;
+    padding: 70px;
     border-radius: 20px;
     color: white;
     margin-bottom: 40px;
 }
-.hero h1 {
-    font-size: 52px;
-    font-weight: 800;
-}
-.hero p {
-    font-size: 20px;
-    max-width: 700px;
-}
+
 .card {
     background-color: white;
-    padding: 25px;
-    border-radius: 18px;
-    box-shadow: 0 6px 14px rgba(0,0,0,0.08);
-    margin-bottom: 30px;
+    padding: 22px;
+    border-radius: 16px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    margin-bottom: 25px;
 }
-.article-card {
-    border-left: 6px solid #2aa198;
+
+.article-img img {
+    height: 200px;
+    object-fit: cover;
+    border-radius: 12px;
 }
+
+.article-title {
+    font-size: 22px;
+    font-weight: 700;
+    margin-top: 10px;
+}
+
 .article-meta {
     font-size: 14px;
     color: #666;
     margin-bottom: 10px;
 }
-.article-title {
-    font-size: 24px;
-    font-weight: 700;
-    color: #073642;
-}
+
 .section-title {
     font-size: 30px;
     font-weight: 800;
     color: #2aa198;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
 }
+
 .footer {
     text-align: center;
     color: #777;
@@ -78,30 +76,96 @@ menu = st.sidebar.radio(
 )
 
 # =====================
+# DATA ARTIKEL
+# =====================
+articles = [
+    {
+        "title": "Memahami Kesehatan Mental di Era Digital",
+        "author": "Tim SehatJiwa",
+        "date": "12 Januari 2026",
+        "image": "https://images.unsplash.com/photo-1506126613408-eca07ce68773",
+        "summary": "Teknologi digital membawa peluang dan tantangan bagi kesehatan mental.",
+        "content": "Perkembangan teknologi digital memengaruhi cara individu berinteraksi, belajar, dan bekerja. Paparan berlebihan terhadap media digital dapat meningkatkan tekanan psikologis apabila tidak diimbangi literasi kesehatan mental yang baik."
+    },
+    {
+        "title": "Depresi: Lebih dari Sekadar Sedih",
+        "author": "Kontributor Pemuda",
+        "date": "14 Januari 2026",
+        "image": "https://images.unsplash.com/photo-1517841905240-472988babdf9",
+        "summary": "Depresi sering kali tidak disadari sejak dini.",
+        "content": "Depresi ditandai dengan perasaan sedih berkepanjangan, kehilangan minat, dan kelelahan emosional. Edukasi dan dukungan profesional berperan penting dalam pencegahan."
+    },
+    {
+        "title": "Mengenali Kecemasan dan Dampaknya",
+        "author": "Tim Edukasi",
+        "date": "16 Januari 2026",
+        "image": "https://images.unsplash.com/photo-1529333166437-7750a6dd5a70",
+        "summary": "Kecemasan berlebihan dapat mengganggu aktivitas sehari-hari.",
+        "content": "Kecemasan merupakan respons alami terhadap stres, namun perlu dikelola agar tidak berkembang menjadi gangguan."
+    },
+    {
+        "title": "Stres Akademik pada Remaja",
+        "author": "Tim SehatJiwa",
+        "date": "18 Januari 2026",
+        "image": "https://images.unsplash.com/photo-1523050854058-8df90110c9f1",
+        "summary": "Tekanan akademik menjadi faktor risiko kesehatan mental.",
+        "content": "Tuntutan akademik yang tinggi dapat memicu stres dan kecemasan apabila tidak disertai strategi koping yang adaptif."
+    },
+    {
+        "title": "Peran Dukungan Sosial",
+        "author": "Kontributor Pemuda",
+        "date": "20 Januari 2026",
+        "image": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e",
+        "summary": "Dukungan sosial memperkuat resiliensi individu.",
+        "content": "Keluarga, teman, dan lingkungan sosial berperan penting dalam menjaga kesehatan mental."
+    },
+    {
+        "title": "Mengelola Emosi Secara Sehat",
+        "author": "Tim Edukasi",
+        "date": "22 Januari 2026",
+        "image": "https://images.unsplash.com/photo-1515378791036-0648a3ef77b2",
+        "summary": "Pengelolaan emosi penting bagi kesejahteraan psikologis.",
+        "content": "Kemampuan mengenali dan mengekspresikan emosi secara sehat membantu individu menghadapi tekanan hidup."
+    },
+    {
+        "title": "Burnout di Usia Muda",
+        "author": "Tim SehatJiwa",
+        "date": "24 Januari 2026",
+        "image": "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee",
+        "summary": "Burnout tidak hanya dialami pekerja dewasa.",
+        "content": "Burnout ditandai kelelahan emosional dan penurunan motivasi yang perlu ditangani sejak dini."
+    },
+    {
+        "title": "Mindfulness untuk Kesehatan Mental",
+        "author": "Tim Edukasi",
+        "date": "26 Januari 2026",
+        "image": "https://images.unsplash.com/photo-1506126613408-eca07ce68773",
+        "summary": "Mindfulness membantu meningkatkan kesadaran diri.",
+        "content": "Latihan mindfulness membantu individu fokus pada saat ini dan mengurangi stres."
+    },
+    {
+        "title": "Media Sosial dan Kesehatan Mental",
+        "author": "Kontributor Pemuda",
+        "date": "28 Januari 2026",
+        "image": "https://images.unsplash.com/photo-1517841905240-472988babdf9",
+        "summary": "Media sosial memiliki dampak positif dan negatif.",
+        "content": "Penggunaan media sosial yang bijak penting untuk menjaga keseimbangan mental."
+    },
+    {
+        "title": "Kapan Harus Mencari Bantuan Profesional?",
+        "author": "Tim SehatJiwa",
+        "date": "30 Januari 2026",
+        "image": "https://images.unsplash.com/photo-1529333166437-7750a6dd5a70",
+        "summary": "Mencari bantuan adalah langkah berani.",
+        "content": "Bantuan profesional perlu dipertimbangkan ketika kondisi mental mengganggu aktivitas sehari-hari."
+    }
+]
+
+# =====================
 # BERANDA
 # =====================
 if menu == "Beranda":
-    st.markdown("""
-    <div class="hero">
-        <h1>SehatJiwa</h1>
-        <p>
-        Website edukasi kesehatan mental yang dikembangkan oleh pemuda
-        sebagai media digital yang akurat, komprehensif, mudah dipahami,
-        dan inklusif bagi masyarakat.
-        </p>
-    </div>
-    """, unsafe_allow_html=True)
-
-    st.markdown("""
-    <div class="card">
-        <p>
-        SehatJiwa bertujuan meningkatkan literasi kesehatan mental melalui
-        konten edukatif terstruktur, berbasis bukti, dan ramah pengguna.
-        Website ini dirancang agar dapat diakses lintas perangkat dan
-        mendukung penguatan resiliensi individu serta masyarakat.
-        </p>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown('<div class="hero"><h1>SehatJiwa</h1><p>Website Edukasi Kesehatan Mental Berbasis Pemuda</p></div>', unsafe_allow_html=True)
 
 # =====================
 # ARTIKEL EDUKASI
@@ -109,57 +173,20 @@ if menu == "Beranda":
 elif menu == "Artikel Edukasi":
     st.markdown('<div class="section-title">Artikel Edukasi Kesehatan Mental</div>', unsafe_allow_html=True)
 
-    # ---------- ARTICLE 1 ----------
-    st.markdown('<div class="card article-card">', unsafe_allow_html=True)
-    st.image(
-        "https://images.unsplash.com/photo-1506126613408-eca07ce68773",
-        use_container_width=True
-    )
-    st.markdown('<div class="article-title">Memahami Kesehatan Mental di Era Digital</div>', unsafe_allow_html=True)
-    st.markdown('<div class="article-meta">Penulis: Tim SehatJiwa | 12 Januari 2026</div>', unsafe_allow_html=True)
+    for art in articles:
+        st.markdown('<div class="card">', unsafe_allow_html=True)
+        st.markdown('<div class="article-img">', unsafe_allow_html=True)
+        st.image(art["image"], use_container_width=True)
+        st.markdown('</div>', unsafe_allow_html=True)
 
-    st.write("""
-    Kesehatan mental merupakan aspek penting dalam kehidupan modern, terutama
-    di tengah perkembangan teknologi dan media digital yang pesat.
-    """)
+        st.markdown(f'<div class="article-title">{art["title"]}</div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="article-meta">Penulis: {art["author"]} | {art["date"]}</div>', unsafe_allow_html=True)
+        st.write(art["summary"])
 
-    with st.expander("Baca Selengkapnya"):
-        st.write("""
-        Di era digital, individu menghadapi berbagai tekanan psikososial,
-        mulai dari tuntutan akademik, pekerjaan, hingga paparan media sosial
-        yang berlebihan. Kondisi ini dapat memengaruhi kesejahteraan psikologis
-        apabila tidak diimbangi dengan literasi kesehatan mental yang memadai.
+        with st.expander("Baca Detail Artikel"):
+            st.write(art["content"])
 
-        Memahami kesehatan mental membantu individu mengenali kondisi diri,
-        mengelola stres secara adaptif, serta mengambil langkah yang tepat
-        ketika membutuhkan bantuan profesional.
-        """)
-    st.markdown('</div>', unsafe_allow_html=True)
-
-    # ---------- ARTICLE 2 ----------
-    st.markdown('<div class="card article-card">', unsafe_allow_html=True)
-    st.image(
-        "https://images.unsplash.com/photo-1517841905240-472988babdf9",
-        use_container_width=True
-    )
-    st.markdown('<div class="article-title">Depresi dan Kecemasan: Mengenali Tanda Awal</div>', unsafe_allow_html=True)
-    st.markdown('<div class="article-meta">Penulis: Kontributor Pemuda | 18 Januari 2026</div>', unsafe_allow_html=True)
-
-    st.write("""
-    Depresi dan kecemasan sering kali tidak disadari sejak dini,
-    padahal pengenalan awal sangat penting dalam pencegahan.
-    """)
-
-    with st.expander("Baca Selengkapnya"):
-        st.write("""
-        Depresi ditandai dengan perasaan sedih berkepanjangan, kehilangan
-        minat, serta kelelahan emosional. Sementara itu, kecemasan muncul
-        dalam bentuk rasa khawatir berlebihan dan sulit berkonsentrasi.
-
-        Mengenali tanda awal memungkinkan individu untuk segera melakukan
-        strategi koping dan mencari dukungan yang sesuai.
-        """)
-    st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
 
 # =====================
 # VIDEO EDUKASI
@@ -167,9 +194,18 @@ elif menu == "Artikel Edukasi":
 elif menu == "Video Edukasi":
     st.markdown('<div class="section-title">Video Edukasi Kesehatan Mental</div>', unsafe_allow_html=True)
 
-    st.markdown('<div class="card">', unsafe_allow_html=True)
-    st.video("https://www.youtube.com/watch?v=oxx564hMBUI")
-    st.markdown('</div>', unsafe_allow_html=True)
+    videos = [
+        "https://www.youtube.com/watch?v=oxx564hMBUI",
+        "https://www.youtube.com/watch?v=hnpQrMqDoqE",
+        "https://www.youtube.com/watch?v=MB5IX-np5fE",
+        "https://www.youtube.com/watch?v=9yjZpBq1XBE",
+        "https://www.youtube.com/watch?v=2pLT-olgUJs"
+    ]
+
+    for v in videos:
+        st.markdown('<div class="card">', unsafe_allow_html=True)
+        st.video(v)
+        st.markdown('</div>', unsafe_allow_html=True)
 
 # =====================
 # TES MENTAL
@@ -199,12 +235,7 @@ elif menu == "Tes Mental":
 elif menu == "Dukungan":
     st.markdown('<div class="card">', unsafe_allow_html=True)
     st.markdown('<div class="section-title">Dukungan dan Rujukan</div>', unsafe_allow_html=True)
-
-    st.write("""
-    SehatJiwa menyediakan informasi rujukan sebagai langkah awal
-    untuk mendapatkan dukungan kesehatan mental yang tepat.
-    """)
-
+    st.write("Informasi konselor sekolah, psikolog, dan layanan kesehatan terdekat.")
     st.markdown('</div>', unsafe_allow_html=True)
 
 # =====================
