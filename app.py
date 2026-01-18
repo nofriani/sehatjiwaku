@@ -45,17 +45,20 @@ body { background-color: #f6fbfb; }
 }
 
 .article-img {
-    height: 170px;
+    width: 40%;
+    height: 40px;        /* 🔒 KUNCI UKURAN DI SINI */
     overflow: hidden;
     border-radius: 14px;
     margin-bottom: 12px;
 }
 
 .article-img img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    width: 40%;
+    height: 40%;
+    object-fit: cover;   /* POTONG RAPI */
+    display: block;
 }
+
 
 .badge {
     font-size: 11px;
